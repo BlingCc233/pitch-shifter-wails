@@ -8,6 +8,7 @@
 
 - [功能特点](#功能特点)
 - [系统需求](#系统需求)
+- [下载Release](#Release)
 - [安装与启动](#安装与启动)
 - [License](#license)
 
@@ -31,6 +32,12 @@
 - Go 1.24+
 - Node.js 22+ / npm 或 yarn
 - Wails v2
+
+---
+
+## Release
+ <img src="https://img.shields.io/github/v/release/BlingCc233/pitch-shifter-wails?color=pink&include_prereleases&style=for-the-badge" alt="release">
+
 
 ---
 
