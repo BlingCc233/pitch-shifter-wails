@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>音频变调器</title>
+    <link rel="stylesheet" href="src/style.css">
+</head>
+<body style="--wails-draggable:drag">
+<div id="app">
+    <div class="titlebar"  >
+        <div class="controls">
+            <div class="btnhere close" id="closeBtn"></div>
+            <div class="btnhere minimize" id="minBtn"></div>
+            <div class="btnhere maximize" id="maxBtn"></div>
+        </div>
+        <div class="title"> </div>
+    </div>
+
+    <div class="container" >
+        <header>
+            <h1>🎵 音频变调器</h1>
+            <p>无损升降调处理工具</p>
+        </header>
+
+        <main  style="--wails-draggable:no-drag">
+            <!-- 文件选择区域 -->
+            <section class="file-section">
+                <div class="drop-zone" id="dropZone">
+                    <div class="drop-content">
+                        <div class="drop-icon">📁</div>
+                        <button id="selectFileBtn" class="btn btn-primary">选择音频文件</button>
+                    </div>
+                </div>
+
+                <div id="fileInfo" class="file-info" style="display: none;">
+                    <div class="file-details">
+                        <h3>已选择文件</h3>
+                        <p id="fileName"></p>
+                        <p id="fileSize"></p>
+                    </div>
+                    <button id="changeFileBtn" class="btn btn-secondary">更换文件</button>
+                </div>
+            </section>
+
+            <!-- 参数设置区域 -->
+            <section class="settings-section">
+                <h3>变调设置</h3>
+
+                <div class="setting-group">
+                    <label for="semitonesSlider">变调半音数：</label>
+                    <div class="slider-container"  style="--wails-draggable:no-drag">
+                        <input type="range" id="semitonesSlider" min="-12" max="12" value="0" step="0.1">
+                        <span id="semitonesValue">0</span>
+                    </div>
+                    <div class="quick-buttons">
+                        <button class="quick-btn" data-value="-12">-1八度</button>
+                        <button class="quick-btn" data-value="-6">-三全音</button>
+                        <button class="quick-btn" data-value="-1">-1半音</button>
+                        <button class="quick-btn" data-value="0">原调</button>
+                        <button class="quick-btn" data-value="1">+1半音</button>
+                        <button class="quick-btn" data-value="6">+三全音</button>
+                        <button class="quick-btn" data-value="12">+1八度</button>
+                    </div>
+                </div>
+
+                <div class="setting-group">
+                    <label>
+                        <input type="checkbox" id="preserveTempo" checked>
+                        保持节拍不变（推荐）
+                    </label>
+                    <small>取消勾选将同时改变播放速度</small>
+                </div>
+            </section>
+
+            <!-- 输出设置 -->
+            <section class="output-section">
+                <h3>输出设置</h3>
+                <div class="output-path">
+                    <input type="text" id="outputPath" placeholder="点击选择输出文件路径..." readonly>
+                    <button id="selectOutputBtn" class="btn btn-secondary">选择路径</button>
+                </div>
+            </section>
+
+            <!-- 处理按钮 -->
+            <section class="process-section">
+                <button id="processBtn" class="btn btn-success" disabled>
+                    <span id="processText">开始处理</span>
+                    <div id="loadingSpinner" class="spinner" style="display: none;"></div>
+                </button>
+            </section>
+
+            <!-- 进度显示 -->
+            <section class="progress-section" id="progressSection" style="display: none;">
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+                <p id="progressText">处理中...</p>
+            </section>
+
+            <!-- 日志输出 -->
+            <section class="log-section">
+                <h3>处理日志</h3>
+                <div id="logOutput" class="log-output"></div>
+            </section>
+
+        </main>
+        <!-- 页脚作者信息 -->
+        <br/>
+        <h3 style="text-align: center">© BlingCc AKA.弗太</h3>
+    </div>
+</div>
+
+<script src="src/main.js" type="module"></script>
+</body>
+</html>

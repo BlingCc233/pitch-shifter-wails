@@ -1,0 +1,478 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    border-radius: 10px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    color: #333;
+}
+::-webkit-scrollbar {
+    display: none;
+}
+
+/* --- 自定义标题栏和拖动区域 --- */
+.titlebar {
+    height: 40px;
+    background-color: rgba(255, 255, 255, 0);
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 99;
+    display: flex;
+    align-items: center;
+    padding-left: 10px;
+    user-select: none; /* 防止文本被选中 */
+
+    /* 关键：将整个标题栏设置为可拖动区域 */
+    --wails-draggable:drag;
+}
+
+/* --- 窗口控制按钮容器 --- */
+.controls {
+    display: flex;
+    align-items: center;
+    height: 100%;
+
+    /* 关键：确保按钮本身不是可拖动区域，以便可以点击 */
+    --wails-draggable: no-drag;
+}
+
+/* --- 按钮通用样式 --- */
+.btnhere {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    margin-right: 8px;
+    cursor: pointer;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* --- 按钮颜色 --- */
+.btnhere.close {
+    background-color: #ff5f57;
+}
+
+.btnhere.minimize {
+    background-color: #ffbd2e;
+}
+
+.btnhere.maximize {
+    background-color: #28c940;
+}
+
+/* --- 鼠标悬停时显示图标 --- */
+.btnhere:hover::before {
+    font-family: "Menlo", "Monaco", "Consolas", "Courier New", monospace;
+    font-weight: bold;
+    font-size: 9px;
+    transition: 0.3s;
+    color: #4d0000; /* 深色图标，使其在背景上可见 */
+    position: absolute;
+}
+
+.btnhere.close:hover::before {
+    content: 'x';
+}
+
+.btnhere.minimize:hover::before {
+    content: '-';
+    padding-bottom: 2px; /* 微调对齐 */
+}
+
+.btnhere.maximize:hover::before {
+    content: '+';
+    padding-bottom: 1px; /* 微调对齐 */
+}
+
+/* --- 标题文本样式 --- */
+.title {
+    flex-grow: 1;
+    text-align: center;
+    font-size: 14px;
+    cursor: alias;
+    color: #ccc;
+    /* 确保标题文本也是可拖动区域的一部分 */
+    -webkit-app-region: drag;
+    pointer-events: none; /* 防止文本干扰拖动 */
+}
+
+/* --- 内容区域样式 --- */
+.content {
+    padding: 20px;
+}
+
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    cursor: default;
+    user-select: none;
+}
+
+header {
+    text-align: center;
+    margin-bottom: 30px;
+    color: white;
+}
+
+header h1 {
+    font-size: 2.5em;
+    margin-bottom: 10px;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+}
+
+header p {
+    font-size: 1.2em;
+    opacity: 0.9;
+}
+
+main {
+    background: white;
+    border-radius: 15px;
+    padding: 30px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+}
+
+section {
+    margin-bottom: 25px;
+}
+
+h3 {
+    color: #4a5568;
+    margin-bottom: 15px;
+    font-size: 1.3em;
+}
+
+/* 文件拖拽区域 */
+.drop-zone {
+    border: 3px dashed #cbd5e0;
+    border-radius: 10px;
+    padding: 40px;
+    text-align: center;
+    transition: all 0.3s ease;
+    background: #f7fafc;
+}
+
+.drop-zone:hover {
+    border-color: #667eea;
+    background: #edf2f7;
+}
+
+.drop-zone.drag-over {
+    border-color: #667eea;
+    background: #e6fffa;
+    transform: scale(1.02);
+}
+
+.drop-icon {
+    font-size: 3em;
+    margin-bottom: 15px;
+}
+
+.drop-content p {
+    margin: 10px 0;
+    color: #718096;
+    font-size: 1.1em;
+}
+
+/* 文件信息 */
+.file-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #f0fff4;
+    padding: 20px;
+    border-radius: 10px;
+    border-left: 4px solid #48bb78;
+}
+
+.file-details h3 {
+    color: #2d3748;
+    margin-bottom: 5px;
+}
+
+.file-details p {
+    color: #4a5568;
+    margin: 5px 0;
+}
+
+/* 按钮样式 */
+.btn {
+    padding: 12px 24px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1em;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    text-transform: none;
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}
+
+.btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.btn-primary {
+    background: #667eea;
+    color: white;
+}
+
+.btn-primary:hover:not(:disabled) {
+    background: #5a67d8;
+}
+
+.btn-secondary {
+    background: #e2e8f0;
+    color: #4a5568;
+}
+
+.btn-secondary:hover:not(:disabled) {
+    background: #cbd5e0;
+}
+
+.btn-success {
+    background: #48bb78;
+    color: white;
+    font-size: 1.1em;
+    padding: 15px 30px;
+    width: 100%;
+}
+
+.btn-success:hover:not(:disabled) {
+    background: #38a169;
+}
+
+/* 设置组 */
+.setting-group {
+    margin-bottom: 20px;
+}
+
+.setting-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #4a5568;
+}
+
+/* 滑块样式 */
+.slider-container {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 15px;
+}
+
+#semitonesSlider {
+    flex: 1;
+    height: 8px;
+    border-radius: 5px;
+    background: #e2e8f0;
+    outline: none;
+    -webkit-appearance: none;
+}
+
+#semitonesSlider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: #667eea;
+    cursor: pointer;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+}
+
+#semitonesSlider::-moz-range-thumb {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: #667eea;
+    cursor: pointer;
+    border: none;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+}
+
+#semitonesValue {
+    font-weight: bold;
+    color: #667eea;
+    min-width: 30px;
+    text-align: center;
+}
+
+/* 快捷按钮 */
+.quick-buttons {
+    display: flex;
+    justify-content: space-evenly;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.quick-btn {
+    padding: 6px 12px;
+    border: 2px solid #e2e8f0;
+    background: white;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.9em;
+    transition: all 0.3s ease;
+}
+
+.quick-btn:hover {
+    border-color: #667eea;
+    background: #f7fafc;
+}
+
+.quick-btn.active {
+    border-color: #667eea;
+    background: #667eea;
+    color: white;
+}
+
+/* 输出路径 */
+.output-path {
+    display: flex;
+    gap: 10px;
+}
+
+.output-path input {
+    flex: 1;
+    padding: 12px;
+    border: 2px solid #e2e8f0;
+    border-radius: 8px;
+    font-size: 1em;
+    background: #f7fafc;
+}
+
+.output-path input:focus {
+    outline: none;
+    border-color: #667eea;
+}
+
+/* 复选框 */
+input[type="checkbox"] {
+    margin-right: 8px;
+    transform: scale(1.2);
+}
+
+small {
+    display: block;
+    color: #718096;
+    margin-top: 5px;
+    font-style: italic;
+}
+
+/* 进度条 */
+.progress-bar {
+    width: 100%;
+    height: 8px;
+    background: #e2e8f0;
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 10px;
+}
+
+.progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #667eea, #764ba2);
+    width: 0%;
+    transition: width 0.3s ease;
+}
+
+#progressText {
+    text-align: center;
+    color: #4a5568;
+    font-weight: 600;
+}
+
+/* 日志输出 */
+.log-output {
+    background: #1a202c;
+    color: #e2e8f0;
+    padding: 15px;
+    border-radius: 8px;
+    font-family: 'Courier New', monospace;
+    font-size: 0.9em;
+    max-height: 200px;
+    overflow-y: auto;
+    white-space: pre-wrap;
+    line-height: 1.4;
+}
+
+.log-output:empty::before {
+    content: "等待处理...";
+    color: #718096;
+    font-style: italic;
+}
+
+/* 加载动画 */
+.spinner {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    border: 3px solid rgba(255,255,255,.3);
+    border-radius: 50%;
+    border-top-color: #fff;
+    animation: spin 1s ease-in-out infinite;
+    margin-left: 10px;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+    .container {
+        padding: 10px;
+    }
+
+    header h1 {
+        font-size: 2em;
+    }
+
+    main {
+        padding: 20px;
+    }
+
+    .quick-buttons {
+        justify-content: center;
+    }
+
+    .quick-btn {
+        font-size: 0.8em;
+        padding: 4px 8px;
+    }
+
+    .output-path {
+        flex-direction: column;
+    }
+}
+
+/* 动画效果 */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+section {
+    animation: fadeIn 0.6s ease-out;
+}
+
+section:nth-child(2) { animation-delay: 0.1s; }
+section:nth-child(3) { animation-delay: 0.2s; }
+section:nth-child(4) { animation-delay: 0.3s; }
+section:nth-child(5) { animation-delay: 0.4s; }
