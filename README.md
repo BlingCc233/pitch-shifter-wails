@@ -36,8 +36,9 @@
 ---
 
 ## Release
+<a href="https://github.com/BlingCc233/pitch-shifter-wails/releases/latest">
  <img src="https://img.shields.io/github/v/release/BlingCc233/pitch-shifter-wails?color=pink&include_prereleases&style=for-the-badge" alt="release">
-
+</a>
 
 ---
 
